@@ -1,0 +1,32 @@
+.header {
+  font-size: 30px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  text-align: "center";
+}
+
+.top-row {
+  flex-direction: row;
+}
+
+.star-rating {
+  margin-right: 170px;
+}
+
+#loading {
+  margin-top: 250px;
+}
+
+#mtb-list {
+  margin: 50px auto;
+  width: 70%;
+}
+
+.back-button {
+  margin-left: 20px;
+  outline: none;
+}
+
+.item:hover {
+  opacity: 0.75;
+}

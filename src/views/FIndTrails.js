@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 
 import Axios from "axios";
 
@@ -14,7 +14,8 @@ class FindTrails extends Component {
     zip: "",
     lon: null,
     lat: null,
-    distance: "50"
+    distance: "50",
+    redirect: false
   };
 
   apiRequest() {
@@ -56,7 +57,7 @@ class FindTrails extends Component {
         this.apiRequest();
       },
       error => this.setState({ error: error.message }),
-      { enableHighAccuracy: true, timeout: 1000 }
+      { enableHighAccuracy: true, timeout: 5000 }
     );
   }
 
@@ -70,6 +71,10 @@ class FindTrails extends Component {
       });
       this.apiRequest();
     });
+  };
+
+  handleOnClick = () => {
+    this.setState({ redirect: true });
   };
 
   onValueChange(value) {
@@ -96,6 +101,9 @@ class FindTrails extends Component {
   render() {
     console.log(this.state.lat + this.state.lon);
     const { isLoading, trails } = this.state;
+    if (this.state.redirect) {
+      return <Redirect push to={`/findtrails/${this.state.trails.id}`} />;
+    }
     return (
       <div>
         <div className='ui secondary  menu'>
@@ -152,22 +160,16 @@ class FindTrails extends Component {
           <div className='ui inverted segment massive' id='mtb-list'>
             <div className='ui inverted relaxed divided list'>
               {trails.map(trail => (
-                <Link to={`/findtrails/${trail.id}`}>
-                  <div key={trail.id} className='item'>
-                    <div className='right floated content'>
-                      <i className='angle right icon'></i>
-                    </div>
-                    <img
-                      className='ui avatar image'
-                      src={trail.pic}
-                      alt='pic'
-                    />
-                    <div className='content'>
-                      <div className='header'>{trail.name}</div>
-                      {trail.location}
-                    </div>
+                <div key={trail.id} className='item'>
+                  <div className='right floated content'>
+                    <i className='angle right icon'></i>
                   </div>
-                </Link>
+                  <img className='ui avatar image' src={trail.pic} alt='pic' />
+                  <div className='content'>
+                    <div className='header'>{trail.name}</div>
+                    {trail.location}
+                  </div>
+                </div>
               ))}
             </div>
           </div>
